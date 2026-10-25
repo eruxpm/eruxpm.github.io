@@ -47,7 +47,7 @@ p{margin:0}
 .menu-list{display:none}
 @media (max-width:1080px){ .hdr{grid-template-columns:repeat(5, minmax(0,1fr)) minmax(0,150px) minmax(0,190px)} }
 @media (max-width:860px){
-  .hdr{grid-template-columns:minmax(0,1fr) auto} .nav:not(:first-child),.hdr .acc-cell,.hdr .langcell{display:none} .menucell{grid-column:2}
+  .hdr{grid-template-columns:minmax(0,1fr) auto} .nav:not(:first-child),.hdr .acc-cell{display:none} .hdr{grid-template-columns:minmax(0,1fr) auto auto} .menucell{grid-column:3} .langcell{min-width:76px} .lang-list{left:auto} .lang-btn{align-items:center} .lang-btn .chev{margin-top:-3px}
   .menucell{display:block; background:none; border:0; border-left:1px solid var(--rule); font-family:var(--f-mono); font-size:14px; text-transform:uppercase; color:inherit; text-align:left; cursor:pointer; min-width:96px}
   .menu-list:not([hidden]){display:block; position:absolute; right:-1px; top:100%; z-index:20; background:var(--paper); border:1px solid var(--rule); list-style:none; margin:0; padding:0; min-width:240px}
   .menu-list a{display:block; padding:14px 16px; border-top:1px solid var(--rule); text-decoration:none}
@@ -361,14 +361,20 @@ details.xp[open] summary{border-bottom:1px solid var(--rule)}
 .cs-next .cell{min-height:96px}
 .sec-body.solo{grid-template-columns:minmax(0,1fr)}
 
-.langcell{display:flex; align-items:flex-start; flex-wrap:wrap; gap:2px; padding:12px 10px; border-left:1px solid var(--rule)}
-.langcell button,.langrow button{background:none; border:1px solid transparent; font:inherit; font-size:12px; letter-spacing:.04em; color:var(--ink-2); padding:6px 5px; min-width:28px; min-height:28px; cursor:pointer}
-.langcell button:hover,.langrow button:hover{color:var(--ink); border-color:var(--rule)}
-.langcell button[aria-pressed="true"],.langrow button[aria-pressed="true"]{color:var(--ink); border-color:var(--ink); font-weight:600}
-@media (max-width:1080px){ .langcell{padding:12px 6px; gap:0} .langcell button{min-width:25px; padding:6px 2px} }
-.menu-list .langrow{display:flex; gap:4px; padding:10px 12px; border-top:1px solid var(--rule)}
-.menu-list .langrow > div{display:flex; gap:4px; flex-wrap:wrap}
-.menu-list .langrow button{min-width:40px; min-height:40px}
+.langcell{overflow:visible; padding:0; z-index:25}
+.lang-btn{display:flex; align-items:flex-start; justify-content:space-between; gap:10px; width:100%; height:100%; min-height:44px; padding:12px 14px; background:none; border:0; font:inherit; font-size:14px; letter-spacing:.04em; text-transform:uppercase; color:inherit; text-align:left; cursor:pointer}
+.lang-btn:hover,.lang-btn[aria-expanded="true"]{background:var(--ink); color:var(--paper)}
+.lang-btn .chev{flex:none; width:7px; height:7px; margin-top:4px; border-right:1px solid currentColor; border-bottom:1px solid currentColor; transform:rotate(45deg); transition:transform .15s}
+.lang-btn[aria-expanded="true"] .chev{transform:translateY(3px) rotate(-135deg)}
+.lang-list{position:absolute; top:100%; right:-1px; left:-1px; min-width:190px; margin:0; padding:0; list-style:none; background:var(--paper); border:1px solid var(--rule); z-index:30}
+.lang-list li + li{border-top:1px solid var(--rule)}
+.lang-list button{display:flex; align-items:baseline; gap:12px; width:100%; min-height:44px; padding:10px 14px; background:none; border:0; font:inherit; font-size:14px; color:var(--ink); text-align:left; cursor:pointer}
+.lang-list .lc{min-width:22px; color:var(--ink-2); font-size:12px; letter-spacing:.06em}
+.lang-list .ln{font-family:var(--f-sans); letter-spacing:0; text-transform:none; font-size:16px}
+.lang-list button:hover,.lang-list button:focus-visible{background:color-mix(in srgb, var(--ink) 7%, var(--paper))}
+.lang-list button[aria-current="true"]{box-shadow:inset 4px 0 0 var(--accent); font-weight:600}
+.lang-list button[aria-current="true"] .lc{color:var(--ink)}
+@media (prefers-reduced-motion: reduce){ .lang-btn .chev{transition:none} }
 html[lang="de"] .case-dia::after{content:"Scrollen →"}
 html[lang="el"] .case-dia::after{content:"Κύλιση →"}
 html[lang="es"] .case-dia::after{content:"Desliza →"}
@@ -464,13 +470,12 @@ html[lang="it"] .case-dia::after{content:"Scorri →"}
       <a class="cell navcell nav mono" href="#work"><span class="t">Work</span><span class="tick" aria-hidden="true"></span></a>
       <a class="cell navcell nav mono" href="#about"><span class="t">About me</span><span class="tick" aria-hidden="true"></span></a>
       <a class="cell navcell nav mono" href="#bookshelf"><span class="t">Bookshelf</span><span class="tick" aria-hidden="true"></span></a>
-      <div class="cell langcell mono" role="group" aria-label="Language" data-noi18n><button type="button" data-lang="de" lang="de" aria-label="Deutsch">DE</button><button type="button" data-lang="el" lang="el" aria-label="Ελληνικά">EL</button><button type="button" data-lang="en" lang="en" aria-label="English">EN</button><button type="button" data-lang="es" lang="es" aria-label="Español">ES</button><button type="button" data-lang="it" lang="it" aria-label="Italiano">IT</button></div>
+      <div class="cell langcell mono" data-noi18n><button class="lang-btn" type="button" aria-expanded="false" aria-label="Language: English"><span class="cur">EN</span><span class="chev" aria-hidden="true"></span></button><ul class="lang-list" hidden><li><button type="button" data-lang="de" lang="de"><span class="lc">DE</span><span class="ln">Deutsch</span></button></li><li><button type="button" data-lang="el" lang="el"><span class="lc">EL</span><span class="ln">Ελληνικά</span></button></li><li><button type="button" data-lang="en" lang="en"><span class="lc">EN</span><span class="ln">English</span></button></li><li><button type="button" data-lang="es" lang="es"><span class="lc">ES</span><span class="ln">Español</span></button></li><li><button type="button" data-lang="it" lang="it"><span class="lc">IT</span><span class="ln">Italiano</span></button></li></ul></div>
       <a class="cell navcell acc-cell mono" href="https://www.linkedin.com/in/erik-sitter" target="_blank" rel="noopener"><span class="t">Connect on LinkedIn</span><span class="arr" aria-hidden="true">↗</span></a>
       <button class="cell menucell" type="button" aria-expanded="false">Menu</button>
       <ul class="menu-list mono" hidden>
         <li><a href="#home">Home</a></li><li><a href="#what">What I do</a></li><li><a href="#work">Work</a></li><li><a href="#about">About me</a></li><li><a href="#bookshelf">Bookshelf</a></li>
         <li><a href="https://www.linkedin.com/in/erik-sitter" target="_blank" rel="noopener">Connect on LinkedIn ↗</a></li>
-        <li class="langrow" data-noi18n><div role="group" aria-label="Language"><button type="button" data-lang="de" lang="de" aria-label="Deutsch">DE</button><button type="button" data-lang="el" lang="el" aria-label="Ελληνικά">EL</button><button type="button" data-lang="en" lang="en" aria-label="English">EN</button><button type="button" data-lang="es" lang="es" aria-label="Español">ES</button><button type="button" data-lang="it" lang="it" aria-label="Italiano">IT</button></div></li>
       </ul>
     </header>
 
@@ -2071,8 +2076,35 @@ if(DICT){ i18nWalk(document.body);
   new MutationObserver(ms=>ms.forEach(m=>{ if(m.type==='childList'){ if(m.target.nodeType===1&&isRich(m.target)) i18nWalk(m.target); else m.addedNodes.forEach(n=>i18nWalk(n)); }
     else if(m.type==='characterData') i18nWalk(m.target); else if(m.type==='attributes'){ const v=m.target.getAttribute(m.attributeName); const k=v&&inorm(v); if(k&&DICT[k]) m.target.setAttribute(m.attributeName,DICT[k]); } }))
    .observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:I18N_ATTRS}); }
-document.addEventListener('click',e=>{ const b=e.target.closest('[data-lang]'); if(!b) return; e.preventDefault(); try{ localStorage.setItem('es-lang',b.dataset.lang); sessionStorage.setItem('es-return',JSON.stringify({v:location.hash.slice(1),y:scrollY,t:Date.now()})); }catch(_){} const u=new URL(location.href); u.searchParams.set('lang',b.dataset.lang); if(u.toString()===location.href) location.reload(); else location.replace(u.toString()); });
-document.querySelectorAll('[data-lang]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===LANG)));
+const LANG_LABEL={de:'Sprache: Deutsch',el:'Γλώσσα: Ελληνικά',en:'Language: English',es:'Idioma: Español',it:'Lingua: Italiano'};
+function langClose(c,focus){ const b=c.querySelector('.lang-btn'), l=c.querySelector('.lang-list'); if(!b||!l) return; l.hidden=true; b.setAttribute('aria-expanded','false'); if(focus) b.focus(); }
+function langOpen(c,focusItem){ const b=c.querySelector('.lang-btn'), l=c.querySelector('.lang-list'); l.hidden=false; b.setAttribute('aria-expanded','true'); if(focusItem){ const cur=l.querySelector('[aria-current="true"]')||l.querySelector('button'); cur.focus(); } }
+document.addEventListener('click',e=>{
+  const tg=e.target.closest('.lang-btn');
+  document.querySelectorAll('.langcell').forEach(c=>{ if(!tg||c!==tg.parentElement) langClose(c); });
+  if(tg){ const c=tg.parentElement; if(tg.getAttribute('aria-expanded')==='true') langClose(c); else langOpen(c,false); return; }
+  const b=e.target.closest('[data-lang]'); if(!b) return; e.preventDefault();
+  const lang=b.dataset.lang, cell=b.closest('.langcell');
+  if(lang===LANG){ if(cell) langClose(cell,true); return; }
+  let v=''; try{ v=curView; }catch(_){} if(!v) v=location.hash.slice(1)||'home';
+  try{ localStorage.setItem('es-lang',lang); sessionStorage.setItem('es-return',JSON.stringify({v,y:scrollY,t:Date.now()})); }catch(_){}
+  const u=new URL(location.href); u.searchParams.set('lang',lang); u.hash=v==='home'?'':'#'+v;
+  location.replace(u.toString());
+});
+document.addEventListener('keydown',e=>{
+  const c=e.target.closest&&e.target.closest('.langcell'); if(!c) return;
+  const b=c.querySelector('.lang-btn'), l=c.querySelector('.lang-list'), items=[...l.querySelectorAll('button')], i=items.indexOf(e.target);
+  if(e.key==='Escape'){ if(!l.hidden){ e.stopPropagation(); langClose(c,true); } return; }
+  if(e.target===b&&(e.key==='ArrowDown'||e.key==='ArrowUp')){ e.preventDefault(); langOpen(c,true); return; }
+  if(i<0) return;
+  if(e.key==='ArrowDown'){ e.preventDefault(); items[(i+1)%items.length].focus(); }
+  else if(e.key==='ArrowUp'){ e.preventDefault(); items[(i-1+items.length)%items.length].focus(); }
+  else if(e.key==='Home'){ e.preventDefault(); items[0].focus(); }
+  else if(e.key==='End'){ e.preventDefault(); items[items.length-1].focus(); }
+},true);
+document.addEventListener('focusout',e=>{ const c=e.target.closest&&e.target.closest('.langcell'); if(c&&!c.contains(e.relatedTarget)) langClose(c); });
+document.querySelectorAll('.langcell').forEach(c=>{ const b=c.querySelector('.lang-btn'); b.querySelector('.cur').textContent=LANG.toUpperCase(); b.setAttribute('aria-label',LANG_LABEL[LANG]); b.setAttribute('lang',LANG); });
+document.querySelectorAll('.lang-list [data-lang]').forEach(b=>{ if(b.dataset.lang===LANG) b.setAttribute('aria-current','true'); else b.removeAttribute('aria-current'); });
 (function(){ const h=document.querySelector('#pin .hdr'); document.querySelectorAll('.subhdr').forEach(ph=>{ const c=h.cloneNode(true); ph.replaceWith(c); }); })();
 const root=document.documentElement, $=s=>document.querySelector(s), $$=(s,c=document)=>[...c.querySelectorAll(s)];
 const NS='http://www.w3.org/2000/svg';
